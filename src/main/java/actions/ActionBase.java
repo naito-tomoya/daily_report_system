@@ -23,6 +23,7 @@ public abstract class ActionBase {
     protected ServletContext context;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
+fuifufberibanigrignregrgber
 
     /**
      * 初期化処理
@@ -94,6 +95,7 @@ public abstract class ActionBase {
 
     }
 
+    
     /**
      * URLを構築しリダイレクトを行う
      * @param action パラメータに設定する値
