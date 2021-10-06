@@ -40,6 +40,10 @@ public enum AttributeConst {
     //削除フラグ
     DEL_FLAG_TRUE(1),
     DEL_FLAG_FALSE(0),
+    
+    //フォロー管理
+    FOLLOW_ID("followId"),
+    REP_FLAG_LIST("flagList"),
 
     //日報管理
     REPORT("report"),

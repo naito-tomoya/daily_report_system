@@ -119,6 +119,34 @@ public class ReportService extends ServiceBase {
         //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
         return errors;
     }
+    
+    /**
+     * レポートIDから従業員IDを取得する
+     * @param reportId レポートID
+     * @return　従業員ID
+     */
+    public Integer getEmployeeId(Integer reportId) {
+    Integer employeeId = (Integer) em
+            .createNativeQuery(JpaConst.S_REP_GET_EMP_DEF)
+            .setParameter(JpaConst.SQL_PARM_REP_ID, reportId)
+            .getSingleResult();
+    return employeeId;
+    }
+    
+    /**
+     * followIDと紐づいた従業員IDから日報データを取得する
+     * @param reportId レポートID
+     * @return　従業員ID
+     */
+    public List<ReportView> getReportByFollowId(Integer followId) {
+        @SuppressWarnings("unchecked")
+        List<Report> reportList = em
+                .createNativeQuery(JpaConst.S_REP_GET_BY_FOL_ID, Report.class)
+                .setParameter(JpaConst.SQL_PARM_FOL_ID, followId)
+                .getResultList();
+        return ReportConverter.toViewList(reportList);
+    }
+
 
     /**
      * idを条件にデータを1件取得する
@@ -153,5 +181,6 @@ public class ReportService extends ServiceBase {
         em.getTransaction().commit();
 
     }
+    
 
 }

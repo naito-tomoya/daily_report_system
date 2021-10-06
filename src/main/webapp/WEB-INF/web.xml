@@ -8,4 +8,14 @@
     <url-pattern>*.css</url-pattern>
   </servlet-mapping>
   <display-name>daily_report_system</display-name>
+  <servlet>
+    <servlet-name>ReportViewMapping</servlet-name>
+    <servlet-class>actions.views.ReportView</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ReportViewMapping</servlet-name>
+    <url-pattern>/ReportView</url-pattern>
+</servlet-mapping>
+  
 </web-app>
+
