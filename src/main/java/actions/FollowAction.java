@@ -42,7 +42,7 @@ public class FollowAction extends ActionBase {
     }
 
     /**
-     * 新規登録を行う
+     * 対象をフォローする
      * @throws ServletException
      * @throws IOException
      */
@@ -106,6 +106,27 @@ public class FollowAction extends ActionBase {
     //            service.follow(fv);
 
     //        }
+    
+    /**
+     * 対象をフォローする
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void delete() throws ServletException, IOException {
+        
+      //セッションからログイン中の従業員情報を取得
+        EmployeeView loginEmployee = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+        
+      //レポートのidを条件に従業員IDを取得する
+        Integer followId = toNumber(getRequestParam(AttributeConst.FOLLOW_ID));
+        
+        service.delete(loginEmployee.getId(), followId);
+
+    }
+    
+    
+    
+    
 
     /**
      * 一覧画面を表示する
@@ -126,27 +147,15 @@ public class FollowAction extends ActionBase {
 
         //followIdList.forEach(followId -> sendReportList.addAll(reportService.getReportByFollowId(followId)));
         
-        List<Integer> flagList = new ArrayList<>();
-        System.out.println("for文に入ります");
-        
         for(Integer followId : followIdList) {
             sendReportList.addAll(reportService.getReportByFollowId(followId));
-            
-            System.out.println("フォローする従業員のIDは" + followId); 
-            
-            Integer flag = service.getFollowByMyIdAndFollowId(loginEmployee.getId(), followId);
-            System.out.println("flagの値は" + flag);
-            flagList.add(flag);
         }
-        
-        
-        
+
 
         //全日報データの件数を取得
         //        long reportsCount = service.countAll();
 
         putRequestScope(AttributeConst.REPORTS, sendReportList); //取得した日報データ
-        putRequestScope(AttributeConst.REP_FLAG_LIST, flagList);
         //putRequestScope(AttributeConst.REP_COUNT, reportsCount); //全ての日報データの件数
         //putRequestScope(AttributeConst.PAGE, page); //ページ数
         //putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数

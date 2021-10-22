@@ -12,6 +12,7 @@ public enum ForwardConst {
     ACT_EMP("Employee"),
     ACT_REP("Report"),
     ACT_FOL("Follow"),
+    ACT_DEL("Delete"),
     ACT_AUTH("Auth"),
 
     //command

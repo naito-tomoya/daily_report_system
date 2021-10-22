@@ -5,6 +5,7 @@
 
 <c:set var="actRep" value="${ForwardConst.ACT_REP.getValue()}" />
 <c:set var="actFol" value="${ForwardConst.ACT_FOL.getValue()}" />
+<c:set var="actDel" value="${ForwardConst.ACT_DEL.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commShow" value="${ForwardConst.CMD_SHOW.getValue()}" />
 <c:set var="commFollow" value="${ForwardConst.CMD_FOLLOW.getValue()}" />
@@ -43,13 +44,12 @@
                                     <p> </p>
                                 </c:when>
                                 <c:otherwise>
-                                <c:out value="${flag}" />
                                      <c:choose>
                                        <c:when test="${flag == 0}">
                                           <a href="<c:url value='?action=${actFol}&command=${commFollow}&followId=${report.employee.id}' />"><button>フォローする</button></a>
                                        </c:when>
                                        <c:otherwise>
-                                          <a href="<c:url value='?action=${actFol}&command=${commFollow}&followId=${report.employee.id}' />"><button>フォロー解除</button></a>
+                                          <a href="<c:url value='?action=${actDel}&command=${commFollow}&followId=${report.employee.id}' />"><button>フォロー解除</button></a>
                                        </c:otherwise> 
                                     </c:choose>
                                 </c:otherwise>

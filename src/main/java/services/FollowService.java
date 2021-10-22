@@ -8,6 +8,7 @@ import actions.views.FollowView;
 import actions.views.ReportConverter;
 import actions.views.ReportView;
 import constants.JpaConst;
+import models.Follow;
 import models.Report;
 
 /**
@@ -16,16 +17,27 @@ import models.Report;
 public class FollowService extends ServiceBase {
 
     public void follow(FollowView fv) {
-        
+
         //登録日時、更新日時は現在時刻を設定する
         LocalDateTime now = LocalDateTime.now();
         fv.setCreatedAt(now);
         fv.setUpdatedAt(now);
 
         //データを登録する
-         create(fv);
+        create(fv);
 
     }
+
+    public Integer delete(Integer myId, Integer followId) {
+        Integer deleteRecord = (Integer) em
+                .createNativeQuery(JpaConst.S_REP_FOL_DEL_DEF)
+                .setParameter(JpaConst.FOL_COL_MY_ID, myId)
+                .setParameter(JpaConst.FOL_COL_FOL_ID, followId)
+                .getSingleResult();
+        return deleteRecord;
+
+    }
+
     private void create(FollowView fv) {
 
         em.getTransaction().begin();
@@ -33,7 +45,7 @@ public class FollowService extends ServiceBase {
         em.getTransaction().commit();
 
     }
-    
+
     /**
      * 指定されたページ数の一覧画面に表示する日報データを取得し、ReportViewのリストで返却する
      * @param page ページ数
@@ -66,29 +78,47 @@ public class FollowService extends ServiceBase {
     public ReportView findOne(int id) {
         return ReportConverter.toView(findOneInternal(id));
     }
-    
+
     /**
      * followsテーブルからfollowIDを全件取得する
      * @param reportId レポートID
      * @return　従業員ID
      */
     public List<Integer> getAllFollowId(Integer my_id) {
-    @SuppressWarnings("unchecked")
-    List<Integer> followIdList = em
-            .createNativeQuery(JpaConst.S_FOL_GET_FOL_ID)
-            .setParameter(JpaConst.FOL_COL_MY_ID, my_id)
-            .getResultList();
-    return followIdList;
+        @SuppressWarnings("unchecked")
+        List<Integer> followIdList = em
+                .createNativeQuery(JpaConst.S_FOL_GET_FOL_ID)
+                .setParameter(JpaConst.FOL_COL_MY_ID, my_id)
+                .getResultList();
+        return followIdList;
     }
-    
-    public Integer getFollowByMyIdAndFollowId(Integer myId, Integer followId) {
-        Integer flag = (Integer)em.createNativeQuery(JpaConst.S_FOL_GET_MY_ID_AND_FOL_ID, Integer.class)
-                .setParameter(JpaConst.SQL_PARM_FOL_MY_ID, myId)
-                .setParameter(JpaConst.SQL_PARM_FOL_ID, followId)
-                .getSingleResult();
-        return flag;
+
+    public Integer getFollowByMyIdAndFollowId(Integer myId, Integer employeeId) {
+        @SuppressWarnings("unchecked")
+        List<Follow> fs = (List<Follow>) em.createNativeQuery(JpaConst.S_FOL_GET_MY_ID_AND_FOL_ID, Follow.class)
+                .setParameter(JpaConst.FOL_COL_MY_ID, myId)
+                .setParameter(JpaConst.FOL_COL_FOL_ID, employeeId)
+                .getResultList();
+        if (fs.size() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
-    
+
+    /**
+     * employeeテーブルからemployeeIDを全件取得する
+     * @param reportId レポートID
+     * @return　従業員ID
+     */
+    public List<Integer> getAllEmployeeId() {
+        @SuppressWarnings("unchecked")
+        List<Integer> followIdList = em
+                .createNativeQuery(JpaConst.S_GET_EMP_ID)
+                .getResultList();
+        return followIdList;
+    }
+
     /**
      * idを条件にデータを1件取得する
      * @param id

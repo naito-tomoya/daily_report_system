@@ -99,18 +99,23 @@ public interface JpaConst {
 
     //createNativeQueryで実行 
     String S_REP_GET_EMP_DEF = "SELECT employee_id FROM reports WHERE id = :" + SQL_PARM_REP_ID; //SQLを使用してemployeeIdを直接取得
-    //解除するとき
-    //String S_REP_GET_EMP_DEF = "DELETE FROM follows WHERE id = :" + SQL_PARM_REP_ID; //
+
     
     //フォローテーブルから自分のIDのレコードにおけるfollow_idを全件取得
-    String S_FOL_GET_FOL_ID = "SELECT follow_id FROM follows WHERE " + FOL_COL_MY_ID + " =:" + FOL_COL_MY_ID;
+    String S_FOL_GET_FOL_ID = "SELECT follow_id FROM follows WHERE " + FOL_COL_MY_ID + " = :" + FOL_COL_MY_ID;
     //フォローテーブルにて、フォローIDとマイIDが一致する場合１を、一致しない場合は0を返す仕組み
-    String S_FOL_GET_MY_ID_AND_FOL_ID = "SELECT COUNT(*) FROM follows WHERE " + FOL_COL_MY_ID + " =:" + SQL_PARM_FOL_MY_ID + " AND " + FOL_COL_FOL_ID + " =:" + SQL_PARM_FOL_ID;
+    String S_FOL_GET_MY_ID_AND_FOL_ID = "SELECT * FROM follows WHERE my_id = :" + FOL_COL_MY_ID + " AND follow_id = :" + FOL_COL_FOL_ID;
     //followId(employee_id)から日報データを取得
     //String Q_REP_GET_BY_FOL_ID = ENTITY_REP + ".getByFollowId";
     //String Q_REP_GET_BY_FOL_ID_DEF = "SELECT r FROM Report As r WHERE r.employee = :" + SQL_PARM_FOL_ID; //r.employeeはすべての従業員情報を入れる変数なのでfollow_idを入れられない 
     
     //フォローした従業員IDから日報データを取得
     String S_REP_GET_BY_FOL_ID = "SELECT * FROM reports WHERE employee_id = :" + SQL_PARM_FOL_ID;
+    
+    //日報に紐づく(reportsテーブルから)すべての従業員のIDを降順に取得
+    String S_GET_EMP_ID = "SELECT employee_id FROM reports ORDER BY id DESC";
+    
+    //フォロー解除
+    String S_REP_FOL_DEL_DEF = "DELETE FROM follows WHERE my_id = :" + FOL_COL_MY_ID + " AND follow_id = :" + FOL_COL_FOL_ID; //
 
 }

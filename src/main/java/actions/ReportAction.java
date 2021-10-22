@@ -2,6 +2,7 @@ package actions;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import services.FollowService;
 import services.ReportService;
 
 /**
@@ -21,6 +23,8 @@ import services.ReportService;
 public class ReportAction extends ActionBase {
 
     private ReportService service;
+    private FollowService followService;
+    
    // private FollowService followService;
 
     /**
@@ -30,6 +34,7 @@ public class ReportAction extends ActionBase {
     public void process() throws ServletException, IOException {
 
         service = new ReportService();
+        followService = new FollowService();
         //followService = new FollowService();
 
         //メソッドを実行
@@ -43,13 +48,33 @@ public class ReportAction extends ActionBase {
      * @throws IOException
      */
     public void index() throws ServletException, IOException {
+        
+      //セッションからログイン中の従業員情報を取得
+        EmployeeView loginEmployee = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+        
+        
+        List<Integer> flagList = new ArrayList<>();
+        
+        List<Integer> employeeIdList = followService.getAllEmployeeId();
+        
+        for(Integer employeeId : employeeIdList) {
+            
+            
+            System.out.println("従業員のIDは" + employeeId); 
+            
+            Integer flag = followService.getFollowByMyIdAndFollowId(loginEmployee.getId(), employeeId);
+            System.out.println("flagの値は" + flag);
+            flagList.add(flag);
+
+        }
+        
+        putRequestScope(AttributeConst.REP_FLAG_LIST, flagList);
+        
+        
 
         //指定されたページ数の一覧画面に表示する日報データを取得
         int page = getPage();
         List<ReportView> reports = service.getAllPerPage(page);
-        
-        //セッションからログイン中の従業員情報を取得
-        EmployeeView loginEmployee = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
         //全日報データの件数を取得
         long reportsCount = service.countAll();
