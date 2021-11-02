@@ -28,17 +28,36 @@ public class FollowService extends ServiceBase {
 
     }
 
-    public Integer delete(Integer myId, Integer followId) {
-        Integer deleteRecord = (Integer) em
-                .createNativeQuery(JpaConst.S_REP_FOL_DEL_DEF)
+    public void delete(Integer myId, Integer followId) {
+
+        // 削除処理
+        em.getTransaction().begin();
+        
+        em.createNativeQuery(JpaConst.S_REP_FOL_DEL_DEF)
                 .setParameter(JpaConst.FOL_COL_MY_ID, myId)
                 .setParameter(JpaConst.FOL_COL_FOL_ID, followId)
-                .getSingleResult();
-        return deleteRecord;
+                .executeUpdate();
+
+        em.getTransaction().commit();
 
     }
 
+    //    public void delete(EmployeeView follow_v, EmployeeView follower_v) {
+    //        
+    //        // モデルインスタンスへ変換
+    //        Employee follow = EmployeeConverter.toModel(follow_v);
+    //        Employee follower = EmployeeConverter.toModel(follower_v);
+    //        // 削除するFollowインスタンスを取得
+    //        Follow f = (Follow) em.createNativeQuery("getFollowByFollowANDFollower", Follow.class).setParameter("follow", follow).setParameter("follower", follower).getSingleResult();
+    //        // 削除処理
+    //        em.getTransaction().begin();
+    //        em.remove(f);
+    //        em.getTransaction().commit();
+    //
+    //    }
+
     private void create(FollowView fv) {
+        System.out.println("今から登録を行います");
 
         em.getTransaction().begin();
         em.persist(FollowConverter.toModel(fv));

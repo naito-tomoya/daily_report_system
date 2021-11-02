@@ -44,6 +44,7 @@ public enum AttributeConst {
     //フォロー管理
     FOLLOW_ID("followId"),
     REP_FLAG_LIST("flagList"),
+    FOL_FOLLOWER_ID("my_id"),
 
     //日報管理
     REPORT("report"),

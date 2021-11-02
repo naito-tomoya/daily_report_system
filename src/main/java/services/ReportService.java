@@ -71,6 +71,16 @@ public class ReportService extends ServiceBase {
     }
 
     /**
+     * 日報テーブルのデータの件数を取得し、返却する
+     * @return データの件数
+     */
+    public long getReportsCount(Integer followId) {
+        long reportsCount = (long) em.createNamedQuery(JpaConst.S_REP_GET_BY_FOL_ID_COUNT, Long.class)
+                .setParameter(JpaConst.SQL_PARM_FOL_ID, followId)
+                .getSingleResult();
+        return reportsCount;
+    }
+    /**
      * idを条件に取得したデータをReportViewのインスタンスで返却する
      * @param id
      * @return 取得データのインスタンス
@@ -119,20 +129,20 @@ public class ReportService extends ServiceBase {
         //バリデーションで発生したエラーを返却（エラーがなければ0件の空リスト）
         return errors;
     }
-    
+
     /**
      * レポートIDから従業員IDを取得する
      * @param reportId レポートID
      * @return　従業員ID
      */
     public Integer getEmployeeId(Integer reportId) {
-    Integer employeeId = (Integer) em
-            .createNativeQuery(JpaConst.S_REP_GET_EMP_DEF)
-            .setParameter(JpaConst.SQL_PARM_REP_ID, reportId)
-            .getSingleResult();
-    return employeeId;
+        Integer employeeId = (Integer) em
+                .createNativeQuery(JpaConst.S_REP_GET_EMP_DEF)
+                .setParameter(JpaConst.SQL_PARM_REP_ID, reportId)
+                .getSingleResult();
+        return employeeId;
     }
-    
+
     /**
      * followIDと紐づいた従業員IDから日報データを取得する
      * @param reportId レポートID
@@ -146,7 +156,6 @@ public class ReportService extends ServiceBase {
                 .getResultList();
         return ReportConverter.toViewList(reportList);
     }
-
 
     /**
      * idを条件にデータを1件取得する
@@ -181,6 +190,5 @@ public class ReportService extends ServiceBase {
         em.getTransaction().commit();
 
     }
-    
 
 }

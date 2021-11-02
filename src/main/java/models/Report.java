@@ -45,6 +45,9 @@ import lombok.Setter;
     //@NamedQuery(
      //       name = JpaConst.Q_REP_GET_BY_FOL_ID,
      //       query = JpaConst.Q_REP_GET_BY_FOL_ID_DEF)
+    @NamedQuery(
+            name = JpaConst.S_REP_GET_BY_FOL_ID_COUNT,
+            query = JpaConst.S_REP_GET_BY_FOL_ID_COUNT_DEF),
 })
 
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)

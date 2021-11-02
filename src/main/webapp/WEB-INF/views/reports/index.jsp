@@ -5,10 +5,10 @@
 
 <c:set var="actRep" value="${ForwardConst.ACT_REP.getValue()}" />
 <c:set var="actFol" value="${ForwardConst.ACT_FOL.getValue()}" />
-<c:set var="actDel" value="${ForwardConst.ACT_DEL.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commShow" value="${ForwardConst.CMD_SHOW.getValue()}" />
 <c:set var="commFollow" value="${ForwardConst.CMD_FOLLOW.getValue()}" />
+<c:set var="commDelete" value="${ForwardConst.CMD_DELETE.getValue()}" />
 <c:set var="commNew" value="${ForwardConst.CMD_NEW.getValue()}" />
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
@@ -25,7 +25,6 @@
                     <th class="report_name">氏名</th>
                     <th class="report_date">日付</th>
                     <th class="report_title">タイトル</th>
-                    <th class="report_follow">フォロー</th>
                     <th class="report_action">操作</th>
                 </tr>
                 <c:forEach var="report" items="${reports}" varStatus="status">
@@ -38,24 +37,6 @@
                         <td class="report_date"><fmt:formatDate value='${reportDay}'
                                 pattern='yyyy-MM-dd' /></td>
                         <td class="report_title">${report.title}</td>
-                        <td class="report_follow">
-                            <c:choose>
-                                <c:when test="${report.employee.id == login_employee.id}">
-                                    <p> </p>
-                                </c:when>
-                                <c:otherwise>
-                                     <c:choose>
-                                       <c:when test="${flag == 0}">
-                                          <a href="<c:url value='?action=${actFol}&command=${commFollow}&followId=${report.employee.id}' />"><button>フォローする</button></a>
-                                       </c:when>
-                                       <c:otherwise>
-                                          <a href="<c:url value='?action=${actDel}&command=${commFollow}&followId=${report.employee.id}' />"><button>フォロー解除</button></a>
-                                       </c:otherwise> 
-                                    </c:choose>
-                                </c:otherwise>
-                            </c:choose>
-                        
-                        </td>
                         <td class="report_action"><a
                             href="<c:url value='?action=${actRep}&command=${commShow}&id=${report.id}' />">詳細を見る</a></td>
                     </tr>
